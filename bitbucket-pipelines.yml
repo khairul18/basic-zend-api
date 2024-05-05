@@ -1,0 +1,202 @@
+image: xtendindonesia/docker-ub-18.04-php7-fpm-nginx:7.3.8.1
+
+options:
+  max-time: 30
+pipelines:
+  default:
+    - step:
+        script:
+          - echo "This script runs on all branches that don't have any specific pipeline assigned in 'branches'."
+  branches:
+    master:
+      - step: 
+          caches:
+            - composer
+          name: xtend-erp
+          deployment: production
+          script:
+            # create path
+            - mkdir -p ${DEPLOYLIVEPATH}
+            # sync content to path
+            - rsync -av . ${DEPLOYLIVEPATH}
+            # change directory
+            - cd ${DEPLOYLIVEPATH}
+            # download composer
+            
+            # instal dependencies 
+            - ./composer install
+            # change permission
+            - chmod 755 module config public vendor 
+
+            # remove unused releases            
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ls -d ${DEPLOYPATH}/* | grep -v \"\`readlink ${DEPLOYLIVEPATH}\`\" | xargs rm -fr"
+            # create release directory
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "mkdir ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}"
+            # send files
+            - rsync --exclude ".git" --exclude "data/log"  --exclude "data/item" --exclude "data/doc" --exclude "data/DoctrineORMModule/Proxy" --exclude "data/photo" --exclude "data/receipt" --exclude "data/qrcode" -rtlvz -e "ssh -p ${DEPLOYHOSTPORT}" -av --progress . "${DEPLOYUSER}@${DEPLOYHOST}:${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/."
+
+            # link shared dir
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/log ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/log"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/photo ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/photo"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/receipt ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/receipt"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/qrcode ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/qrcode"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/doc ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/doc"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/DoctrineORMModule/Proxy ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/DoctrineORMModule/Proxy"
+
+            # link shared config
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/local.php"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/user.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/user.local.php"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/doctrine.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/doctrine.local.php"
+              #- ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/firebase.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/firebase.local.php"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/oauth2.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/oauth2.local.php"
+              # - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/mail.notification.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/mail.notification.local.php"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/mail.transport.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/mail.transport.local.php"
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/project.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/project.local.php"
+
+            # change permission cache folder
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "chmod -R 757 ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/cache"
+
+            # run 
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "php7.3 ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/vendor/bin/doctrine-module migrations:migrate --no-interaction"
+
+            # create symlink
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER} ${DEPLOYLIVEPATH}"
+
+            # clear cache
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "rm -fr ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/cache/*"
+
+            # relo
+            - ssh -p ${DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "sudo /etc/init.d/php7.3-fpm reload"
+
+            # tag release
+            - git remote set-url origin ${BITBUCKET_GIT_SSH_ORIGIN}
+            - git config --global user.email "${BITBUCKET_USER}@gmail.com"
+            - git config --global user.name "${BITBUCKET_USER}"
+            - git tag -a "build-${BITBUCKET_BUILD_NUMBER}" -m "Build Number ${BITBUCKET_BUILD_NUMBER}"
+            - git push origin "build-${BITBUCKET_BUILD_NUMBER}"
+
+    daikinmdn:
+      - step:
+          caches:
+            - composer
+          name: daikinmdn
+          deployment: Daikin MDN
+          script:
+            # create path
+            - mkdir -p ${DAIKIN_DEPLOYLIVEPATH}
+            # sync content to path
+            - rsync -av . ${DAIKIN_DEPLOYLIVEPATH}
+            # change directory
+            - cd ${DAIKIN_DEPLOYLIVEPATH}
+            # instal dependencies
+            - ./composer install
+            # change permission
+            - chmod 755 module config public vendor
+
+            # remove unused releases
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ls -d ${DAIKIN_DEPLOYPATH}/* | grep -v \"\`readlink ${DAIKIN_DEPLOYLIVEPATH}\`\" | xargs rm -fr"
+            # create release directory
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "mkdir ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}"
+            # send files
+            - rsync --exclude ".git" --exclude "data/log" --exclude "data/doc" --exclude "data/DoctrineORMModule/Proxy" --exclude "data/photo" --exclude "data/receipt" --exclude "data/qrcode" -rtlvz -e "ssh -p ${DAIKIN_DEPLOYHOSTPORT}" -av --progress . "${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST}:${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/."
+
+            # link shared dir
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDDIR}/data/log ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/log"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDDIR}/data/photo ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/photo"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDDIR}/data/receipt ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/receipt"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDDIR}/data/qrcode ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/qrcode"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDDIR}/data/doc ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/doc"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDDIR}/data/DoctrineORMModule/Proxy ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/DoctrineORMModule/Proxy"
+
+            # link shared config
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDCONFIG}/local.php ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/local.php"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDCONFIG}/user.local.php ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/user.local.php"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDCONFIG}/doctrine.local.php ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/doctrine.local.php"
+              #- ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/firebase.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/firebase.local.php"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDCONFIG}/oauth2.local.php ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/oauth2.local.php"
+              # - ssh ${DAIKIN_DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/mail.notification.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/mail.notification.local.php"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDCONFIG}/mail.transport.local.php ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/mail.transport.local.php"
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYSHAREDCONFIG}/project.local.php ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/project.local.php"
+
+            # change permission cache folder
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "chmod -R 757 ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/cache"
+
+            # run
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "php7.4 ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/vendor/bin/doctrine-module migrations:migrate --no-interaction"
+
+            # create symlink
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "ln -sfn ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER} ${DAIKIN_DEPLOYLIVEPATH}"
+
+            # clear cache
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "rm -fr ${DAIKIN_DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/cache/*"
+
+            # relo
+            - ssh -p ${DAIKIN_DEPLOYHOSTPORT} ${DAIKIN_DEPLOYUSER}@${DAIKIN_DEPLOYHOST} "sudo /etc/init.d/php7.4-fpm reload"
+
+            # tag release
+            - git remote set-url origin ${BITBUCKET_GIT_SSH_ORIGIN}
+            - git config --global user.email "${BITBUCKET_USER}@gmail.com"
+            - git config --global user.name "${BITBUCKET_USER}"
+            - git tag -a "build-${BITBUCKET_BUILD_NUMBER}" -m "Build Number ${BITBUCKET_BUILD_NUMBER}"
+            - git push origin "build-${BITBUCKET_BUILD_NUMBER}"
+
+    develop:
+      - step:
+          caches:
+            - composer
+          name: xtend-erp
+          deployment: development
+          script:
+            # create path
+            - mkdir -p ${DEPLOYLIVEPATH}
+            # sync content to path
+            - rsync -av . ${DEPLOYLIVEPATH}
+            # change directory
+            - cd ${DEPLOYLIVEPATH}
+            # download composer
+            # - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+            # instal dependencies 
+            - ./composer install
+            # change permission
+            - chmod 755 module config public vendor 
+
+            # remove unused releases            
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ls -d ${DEPLOYPATH}/* | grep -v \"\`readlink ${DEPLOYLIVEPATH}\`\" | xargs rm -fr"
+            # create release directory
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "mkdir ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}"
+            # send files
+            - rsync --exclude ".git"  --exclude "data/item" --exclude "data/log" --exclude "data/doc" --exclude "data/DoctrineORMModule/Proxy" --exclude "data/photo" --exclude "data/qrcode" --exclude "data/receipt" -rtlvz -e ssh -av --progress . "${DEPLOYUSER}@${DEPLOYHOST}:${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/."
+
+            # link shared dir
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/log ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/log"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/photo ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/photo"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/receipt ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/receipt"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/qrcode ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/qrcode"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/item ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/item"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/doc ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/doc"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDDIR}/data/DoctrineORMModule/Proxy ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/DoctrineORMModule/Proxy"
+
+            # link shared config
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/local.php"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/user.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/user.local.php"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/doctrine.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/doctrine.local.php"
+              #- ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/firebase.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/firebase.local.php"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/oauth2.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/oauth2.local.php"
+              # - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/mail.notification.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/mail.notification.local.php"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/mail.transport.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/mail.transport.local.php"
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYSHAREDCONFIG}/project.local.php ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/config/autoload/project.local.php"
+
+            # change permission cache folder
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "chmod -R 757 ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/cache"
+
+            # run 
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "php7.3 ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/vendor/bin/doctrine-module migrations:migrate --no-interaction"
+
+            # create symlink
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "ln -sfn ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER} ${DEPLOYLIVEPATH}"
+
+            # clear cache
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "rm -fr ${DEPLOYPATH}/${BITBUCKET_BUILD_NUMBER}/data/cache/*"
+
+            # relo
+            - ssh ${DEPLOYUSER}@${DEPLOYHOST} "sudo /etc/init.d/php7.3-fpm reload"

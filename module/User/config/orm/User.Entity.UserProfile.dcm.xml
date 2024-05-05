@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+  <entity name="User\Entity\UserProfile" table="user_profile">
+    <indexes>
+      <index name="IDX_user_parent" columns="parent_uuid"/>
+      <index name="FK_D95AB405E89AB43C_idx" columns="account_uuid"/>
+      <index name="department_idx" columns="department_uuid"/>
+      <index name="branch_idx" columns="branch_uuid"/>
+      <index name="company_idx" columns="company_uuid"/>
+      <index name="position_idx" columns="position_uuid"/>
+      <index name="job_activity_idx" columns="job_activity"/>
+      <index name="driving_activity_idx" columns="driving_activity"/>
+      <index name="employment_type_idx" columns="employment_type_uuid"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="IDX_user_ic" columns="ic_number"/>
+      <unique-constraint name="IDX_D95AB405AA45BB37" columns="username"/>
+    </unique-constraints>
+    <id name="uuid" type="string" column="uuid" length="36">
+      <generator strategy="UUID"/>
+    </id>
+    <field name="email" type="string" column="email" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="workemail" type="string" column="workemail" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="ficNumber" type="string" column="fic_number" length="16" nullable="true">
+      <options>
+        <option name="fixed">1</option>
+      </options>
+    </field>
+    <field name="icNumber" type="string" column="ic_number" length="16" nullable="true">
+      <options>
+        <option name="fixed">1</option>
+      </options>
+    </field>
+    <field name="drivingLicence" type="string" column="driving_licence" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="secret" type="string" column="secret" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="facetempToken" type="string" column="facetemp_token" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="atacToken" type="string" column="atac_token" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="staffId" type="string" column="staff_id" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="firstName" type="string" column="first_name" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="lastName" type="string" column="last_name" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="nickName" type="string" column="nick_name" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="firstDate" type="date" column="first_date" nullable="true"/>
+    <field name="role" type="string" column="role" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phone" type="string" column="phone" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="workphone" type="string" column="workphone" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mobile" type="string" column="mobile" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="pob" type="string" column="pob" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="dob" type="date" column="dob" nullable="true"/>
+    <field name="gender" type="string" column="gender" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="maritalStatus" type="string" column="marital_status" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="address" type="string" column="address" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="addressCurrent" type="string" column="address_current" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <!-- <field name="city" type="string" column="city" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="state" type="string" column="state" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field> -->
+    <field name="postalCode" type="string" column="postal_code" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="country" type="string" column="country" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="identityType" type="string" column="identity_type" length="50" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="nationality" type="string" column="nationality" length="50" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="bloodType" type="string" column="blood_type" length="50" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="relationPrimaryName" type="string" column="relation_primary_name" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="relationPrimaryPhone" type="string" column="relation_primary_phone" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="relationshipPrimary" type="string" column="relationship_primary" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="relationSecondaryName" type="string" column="relation_secondary_name" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="relationSecondaryPhone" type="string" column="relation_secondary_phone" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="relationshipSecondary" type="string" column="relationship_secondary" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="jobDesk" type="string" column="job_desk" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="timezone" type="string" column="timezone" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="photo" type="string" column="photo" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="isActive" type="boolean" column="is_active" nullable="false">
+      <options>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="firebaseId" type="text" column="firebase_id" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="androidDeviceId" type="text" column="android_device_id" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="iosDeviceToken" type="text" column="ios_device_token" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="androidLastState" type="text" column="android_last_state" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="signature" type="text" column="signature" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="questionnaireCounter" type="integer" column="questionnaire_counter" nullable="false">
+      <options>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="lastQuestionnaireAt" type="datetime" column="last_questionnaire_at" nullable="true" />
+    <field name="lastScore" type="integer" column="last_score" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="leaveQuota" type="integer" column="leave_quota" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="latitude" type="decimal" column="latitude" precision="10" scale="8" nullable="true"/>
+    <field name="longitude" type="decimal" column="longitude" precision="11" scale="8" nullable="true"/>
+    <field name="createdAt" type="datetime" column="created_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="updatedAt" type="datetime" column="updated_at" nullable="true">
+      <gedmo:timestampable on="update"/>
+    </field>
+    <field name="deletedAt" type="datetime" column="deleted_at" nullable="true" />
+    <gedmo:soft-deleteable field-name="deletedAt" time-aware="false" />
+    <many-to-one field="account" target-entity="User\Entity\Account" fetch="LAZY">
+      <join-columns>
+        <join-column name="account_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="department" target-entity="User\Entity\Department" fetch="LAZY">
+      <join-columns>
+        <join-column name="department_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="company" target-entity="User\Entity\Company" fetch="LAZY">
+      <join-columns>
+        <join-column name="company_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="branch" target-entity="User\Entity\Branch" fetch="LAZY">
+      <join-columns>
+        <join-column name="branch_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="position" target-entity="User\Entity\Position" fetch="LAZY">
+      <join-columns>
+        <join-column name="position_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="employmentType" target-entity="User\Entity\EmploymentType" fetch="LAZY">
+      <join-columns>
+        <join-column name="employment_type_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <!-- <many-to-one field="jobActivity" target-entity="Job\Entity\Job" fetch="LAZY">
+      <join-columns>
+        <join-column name="job_activity" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one> -->
+    <!-- <many-to-one field="drivingActivity" target-entity="Vehicle\Entity\VehicleRequest" fetch="LAZY">
+      <join-columns>
+        <join-column name="driving_activity" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one> -->
+    <many-to-one field="parent" target-entity="User\Entity\UserProfile" fetch="LAZY" inversed-by="children">
+      <join-columns>
+        <join-column name="parent_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-many field="children" target-entity="User\Entity\UserProfile" mapped-by="parent">
+      <cascade>
+        <cascade-persist />
+        <cascade-remove />
+      </cascade>
+    </one-to-many>
+    <many-to-one field="username" target-entity="\Aqilix\OAuth2\Entity\OauthUsers" fetch="LAZY">
+      <join-columns>
+        <join-column name="username" referenced-column-name="username"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-one field="qrCode" target-entity="QRCode\Entity\QRCodeOwner" mapped-by="userProfile" />
+    <one-to-many field="educations" target-entity="User\Entity\Education" mapped-by="user" />
+    <one-to-many field="userDocument" target-entity="User\Entity\UserDocument" mapped-by="user" />
+    <one-to-many field="allowedModules" target-entity="User\Entity\UserAcl" mapped-by="facility" />
+    <one-to-many field="roleDownStream" target-entity="User\Entity\UserAccess" mapped-by="facility2" />
+    <!-- <one-to-many field="attendance" target-entity="Attendance\Entity\Attendance" mapped-by="userProfile" /> -->
+  </entity>
+</doctrine-mapping>

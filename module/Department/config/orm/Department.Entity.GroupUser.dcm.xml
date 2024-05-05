@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+  <entity name="Department\Entity\GroupUser" table="groups_user">
+    <indexes>
+      <index name="group_idx" columns="group_uuid"/>
+      <index name="user_profile_idx" columns="user_profile_uuid"/>
+    </indexes>
+    <id name="uuid" type="string" column="uuid" length="36">
+      <generator strategy="UUID"/>
+    </id>
+    <field name="isActive" type="boolean" column="is_active" nullable="false">
+      <options>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="createdAt" type="datetime" column="created_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="updatedAt" type="datetime" column="updated_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="deletedAt" type="datetime" column="deleted_at" nullable="true"/>
+    <gedmo:soft-deleteable field-name="deletedAt" time-aware="false" />
+    <many-to-one field="groups" target-entity="Department\Entity\Group" fetch="LAZY">
+      <join-columns>
+        <join-column name="group_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="userProfile" target-entity="User\Entity\UserProfile" fetch="LAZY">
+      <join-columns>
+        <join-column name="user_profile_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+  <entity name="QRCode\Entity\QRCodeOwner" table="qr_code_owner">
+    <indexes>
+      <index name="idx_qr_code_owner_qr_code_uuid" columns="qr_code_uuid"/>
+      <index name="idx_qr_code_owner_user_profile_uuid" columns="user_profile_uuid"/>
+      <index name="idx_qr_code_owner_visitor_uuid" columns="visitor_uuid"/>
+      <index name="qrCodeOwnerSite_fk_idx" columns="site_uuid"/>
+    </indexes>
+    <id name="uuid" type="string" column="uuid" length="36">
+      <generator strategy="UUID"/>
+    </id>
+    <field name="expiredAt" type="datetime" column="expired_at" nullable="true"/>
+    <field name="createdAt" type="datetime" column="created_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="updatedAt" type="datetime" column="updated_at" nullable="true">
+      <gedmo:timestampable on="update"/>
+    </field>
+    <field name="deletedAt" type="datetime" column="deleted_at" nullable="true"/>
+    <gedmo:soft-deleteable field-name="deletedAt" time-aware="false" />
+    <one-to-one field="qrCode" target-entity="QRCode\Entity\QRCode" fetch="LAZY">
+        <join-column name="qr_code_uuid" referenced-column-name="uuid"/>
+    </one-to-one>
+    <one-to-one field="userProfile" target-entity="User\Entity\UserProfile" fetch="LAZY">
+        <join-column name="user_profile_uuid" referenced-column-name="uuid"/>
+    </one-to-one>
+    <one-to-one field="qrCodeOwnerType" target-entity="QRCode\Entity\QRCodeOwnerType" fetch="LAZY">
+        <join-column name="qr_code_owner_type_uuid" referenced-column-name="uuid"/>
+    </one-to-one>
+  </entity>
+</doctrine-mapping>

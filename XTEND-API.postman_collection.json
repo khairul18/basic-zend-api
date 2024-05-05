@@ -1,0 +1,3062 @@
+{
+	"info": {
+		"_postman_id": "18d66a83-ad8d-4f04-b8ca-162b597a69fc",
+		"name": "XTEND-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth (Mobile) Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"tests[\"token_type is Bearer\"] = data.token_type === \"Bearer\";",
+									"postman.setEnvironmentVariable(\"sms_access_token\", data.access_token);",
+									"postman.setEnvironmentVariable(\"sms_refresh_token\", data.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"12345678\",\n  \"grant_type\": \"password\",\n  \"client_secret\": \"a78b4e9f01d\",\n  \"client_id\": \"iqs-mobile-app\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/oauth",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"oauth"
+							]
+						},
+						"description": "Helpdesk ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Auth (Web) Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"tests[\"token_type is Bearer\"] = data.token_type === \"Bearer\";",
+									"postman.setEnvironmentVariable(\"sms_access_token\", data.access_token);",
+									"postman.setEnvironmentVariable(\"sms_refresh_token\", data.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"12345678\",\n  \"grant_type\": \"password\",\n  \"client_secret\": \"d979e29f23f\",\n  \"client_id\": \"iqs-web-admin\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/oauth",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"oauth"
+							]
+						},
+						"description": "Helpdesk ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token (Web)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"tests[\"token_type is Bearer\"] = data.token_type === \"Bearer\";",
+									"postman.setEnvironmentVariable(\"sms_access_token\", data.access_token);",
+									"postman.setEnvironmentVariable(\"sms_refresh_token\", data.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"grant_type\": \"refresh_token\",\n  \"client_id\": \"iqs-web-admin\",\n  \"client_secret\" : \"d979e29f23f\",\n  \"refresh_token\": \"{{sms_refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/oauth",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"oauth"
+							]
+						},
+						"description": "Using \"ios\" Client ID with \"testing\" as user"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token (Mobile)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"tests[\"token_type is Bearer\"] = data.token_type === \"Bearer\";",
+									"postman.setEnvironmentVariable(\"sms_access_token\", data.access_token);",
+									"postman.setEnvironmentVariable(\"sms_refresh_token\", data.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"grant_type\": \"refresh_token\",\n  \"client_id\": \"iqs-mobile-app\",\n  \"client_secret\" : \"a78b4e9f01d\",\n  \"refresh_token\": \"{{sms_refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/oauth",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"oauth"
+							]
+						},
+						"description": "Using \"ios\" Client ID with \"testing\" as user"
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke Token/Signout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"token_type_hint\": \"access_token\", \"token\": \"{{sms_access_token}}\"}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/authrevoke",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authrevoke"
+							]
+						},
+						"description": "Using \"testclient\" Client ID with \"testing\" as user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "Notification",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{iqs_mob_access_token}}",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/notification",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notification"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "car",
+									"disabled": true
+								},
+								{
+									"key": "unread",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "status_type",
+									"value": "OVERTIME,LEAVE,REIMBURSEMENT",
+									"disabled": true
+								},
+								{
+									"key": "user_profile",
+									"value": "1a5f3251-0309-4b13-8a19-ed0a8af0faf0",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Ticket Create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Notification Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"unread\" : 0\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/notification/784644c3-b04d-11ea-97a9-0242ac110002",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notification",
+								"784644c3-b04d-11ea-97a9-0242ac110002"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "car",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Ticket Create"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Position",
+					"item": [
+						{
+							"name": "Get Position Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/position",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"position"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Position",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Dandim 2\",\n    \"note\": \"contoh note desc ny\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/position",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"position"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Role",
+					"item": [
+						{
+							"name": "Get User Role Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-role",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"TestErdf\",\n    \"parent\": \"bac398cc-aa73-4ff0-9195-c9d8c93a47c9\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-role",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Role",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Debugger duo\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-role/c85cdd6a-e1d4-11ea-95be-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-role",
+										"c85cdd6a-e1d4-11ea-95be-0242ac110002"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Module",
+					"item": [
+						{
+							"name": "Get User Module Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-module/0b17e1a8-aeee-4f23-8074-9e275037a7a5",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-module",
+										"0b17e1a8-aeee-4f23-8074-9e275037a7a5"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "abzModule",
+											"type": "text"
+										},
+										{
+											"key": "parent",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/home/flaster/Pictures/Screenshot from 2020-07-24 14-07-41.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-module",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-module"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Module",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "AbzModUpdte",
+											"type": "text"
+										},
+										{
+											"key": "parent",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/home/flaster/Pictures/Screenshot from 2020-09-17 10-03-30.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-module/a7b582f0-fd52-11ea-9213-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-module",
+										"a7b582f0-fd52-11ea-9213-0242ac110002"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Acl",
+					"item": [
+						{
+							"name": "Get User Acl Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-acl?user_role_uuid=203281cf-fd7e-11ea-9c06-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-acl"
+									],
+									"query": [
+										{
+											"key": "user_role_uuid",
+											"value": "203281cf-fd7e-11ea-9c06-0242ac110002"
+										}
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Modify User Acl",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dataAcl",
+											"value": "[]",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "dataAcl",
+											"value": "[{\"uuid\":\"\", \"userRole\":\"203281cf-fd7e-11ea-9c06-0242ac110002\", \"userModule\": \"a7b582f0-fd52-11ea-9213-0242ac110002\", \"delete\": \"0\"}, {\"uuid\":\"8856e19f-fe12-11ea-bcef-0242ac110002\", \"userRole\":\"203281cf-fd7e-11ea-9c06-0242ac110002\", \"userModule\": \"13a0c7df-15e5-4721-afe4-3e005b108fba\", \"delete\": \"1\"}]",
+											"type": "text"
+										},
+										{
+											"key": "",
+											"value": "bcb5a366-fe12-11ea-bcef-0242ac110002",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "dataAcl",
+											"value": "[{\"uuid\":\"885540f4-fe12-11ea-bcef-0242ac110002\", \"userRole\":\"203281cf-fd7e-11ea-9c06-0242ac110002\", \"userModule\": \"a7b582f0-fd52-11ea-9213-0242ac110002\", \"delete\": \"1\"}]",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-acl-update",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-acl-update"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Education",
+					"item": [
+						{
+							"name": "Get Education Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/education",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"education"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Education User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": \"e29af35b-a092-11ea-a9be-0242ac110002\",\n    \"levelEducation\": \"SD\",\n    \"schoolName\": \"SD Pelita Harapan\",\n    \"graduatedYear\": \"2017\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/education",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"education"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Document",
+					"item": [
+						{
+							"name": "Get User Document Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-document",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-document"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User Document",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "user",
+											"value": "b5ab95bd-a54b-11ea-84e7-0242ac110002",
+											"type": "text"
+										},
+										{
+											"key": "doc",
+											"type": "file",
+											"src": "/home/flaster/E-arif/New Doc 2018-06-30 (1).pdf"
+										},
+										{
+											"key": "type",
+											"value": "dtaa penting",
+											"type": "text"
+										},
+										{
+											"key": "note",
+											"value": "ini poto ktp",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-document",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-document"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Document",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "user",
+											"value": "e29af35b-a092-11ea-a9be-0242ac110002",
+											"type": "text"
+										},
+										{
+											"key": "doc",
+											"type": "file",
+											"src": "/home/flaster/Pictures/_Baymax-512.png"
+										},
+										{
+											"key": "type",
+											"value": "foto sim",
+											"type": "text"
+										},
+										{
+											"key": "note",
+											"value": "ini blm di cek lgi",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-document",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-document"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Employment Type",
+					"item": [
+						{
+							"name": "Get Employment Type Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/employment-type",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"employment-type"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Employment Type",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Mangang Event\",\n    \"note\": \"note sample here\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/employment-type",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"employment-type"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Access",
+					"item": [
+						{
+							"name": "Get User Access Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-access",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-access"
+									],
+									"query": [
+										{
+											"key": "company_uuid",
+											"value": "aead87f2-9f07-11ea-bfec-0242ac110002",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "Type",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Add New User Access",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userProfile\": \"b68e3468-aa09-11ea-93b7-0242ac110002\",\n    \"userRole\": \"16897db3-be09-419f-b2a6-38087aea2ab4\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-access",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-access"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Access",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userProfile\": \"b68e3468-aa09-11ea-93b7-0242ac110002\",\n    \"userRole\": \"5eaf5ce5-ceae-46fc-b3d8-713d2128398d\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-access/90b5fb93-e5bd-11ea-af77-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-access",
+										"90b5fb93-e5bd-11ea-af77-0242ac110002"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete / Remove User Access",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-access/90b5fb93-e5bd-11ea-af77-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-access",
+										"90b5fb93-e5bd-11ea-af77-0242ac110002"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Role",
+					"item": [
+						{
+							"name": "Get User Role Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-role",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"TestErdf\",\n    \"parent\": \"bac398cc-aa73-4ff0-9195-c9d8c93a47c9\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-role",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Role",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Debugger duo\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/user-role/c85cdd6a-e1d4-11ea-95be-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user-role",
+										"c85cdd6a-e1d4-11ea-95be-0242ac110002"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "QR Code",
+					"item": [
+						{
+							"name": "User Renew QRCode",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/renew-qr-code",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"renew-qr-code"
+									],
+									"query": [
+										{
+											"key": "start_date",
+											"value": "2018-02-18",
+											"disabled": true
+										},
+										{
+											"key": "end_date",
+											"value": "2018-04-01",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create QRCode",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/qrcode",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"qrcode"
+									],
+									"query": [
+										{
+											"key": "start_date",
+											"value": "2018-02-18",
+											"disabled": true
+										},
+										{
+											"key": "end_date",
+											"value": "2018-04-01",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get QRCode",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/qrcode",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"qrcode"
+									],
+									"query": [
+										{
+											"key": "end_date",
+											"value": "2018-04-01",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get QRCode By UUID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/qrcode",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"qrcode"
+									],
+									"query": [
+										{
+											"key": "end_date",
+											"value": "2018-04-01",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get QRCode By Start Date",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/qrcode?start_date=2018-03-15",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"qrcode"
+									],
+									"query": [
+										{
+											"key": "end_date",
+											"value": "2018-04-01",
+											"disabled": true
+										},
+										{
+											"key": "start_date",
+											"value": "2018-03-15"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate QR Code",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"units\": 1\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/generate-qr-code",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"generate-qr-code"
+									],
+									"query": [
+										{
+											"key": "start_date",
+											"value": "2018-02-18",
+											"disabled": true
+										},
+										{
+											"key": "end_date",
+											"value": "2018-04-01",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create QRCode",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{rcs_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rcs_api_url}}/api/v1/qrcode",
+									"host": [
+										"{{rcs_api_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"qrcode"
+									],
+									"query": [
+										{
+											"key": "start_date",
+											"value": "2018-02-18",
+											"disabled": true
+										},
+										{
+											"key": "end_date",
+											"value": "2018-04-01",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "QRCode Validator",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qrCode\": \"51fb754e69eb79d7813f\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/qr-code-validator",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"qr-code-validator"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{sms_api_host}}/api/me",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"me"
+							]
+						},
+						"description": "Me API Resource"
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/profile",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile"
+							],
+							"query": [
+								{
+									"key": "position_uuid",
+									"value": "9bcd7cb1-9ff5-11ea-8317-0242ac110002",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "farhan",
+									"disabled": true
+								}
+							]
+						},
+						"description": "User Profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password Confirm Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.aqilix.bootstrap.v1+json"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"emailAddress\": \"adminsms@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/resetpassword/email",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"resetpassword",
+								"email"
+							]
+						},
+						"description": "Reset Password Confirm Email"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password New Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.aqilix.bootstrap.v1+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"resetPasswordKey\": \"aecaac42-b55c-49c7-8e94-a2fa65ea0a48\", \n\t\"newPassword\": \"12345678\", \n\t\"confirmNewPassword\": \"12345678\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/resetpassword/newpassword",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"resetpassword",
+								"newpassword"
+							]
+						},
+						"description": "Reset Password New Password"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.aqilix.bootstrap.v1+json",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"currentPassword\": \"12345678\", \n\t\"newPassword\": \"123456789\", \n\t\"confirmPassword\": \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/change-password",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"change-password"
+							]
+						},
+						"description": "Reset Password New Password"
+					},
+					"response": []
+				},
+				{
+					"name": "User Signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"reza4@gmail.com\",\n    \"password\": \"12345678\",\n    \"firstName\": \"Reza\",\n    \"icNumber\": \"42345678998728\", \n    \"phone\": \"085212345678\",\n    \"address\": \"Setia Budi no.2 blok OO\",\n    \"dob\": \"31-12-2019\",\n    \"longitude\": \"3.138675\",\n    \"latitude\": \"101.6169485\",\n    \"state\": \"2c26f61b-3e56-4e33-b2e4-2d71f29a52b0\",\n    \"district\": \"0079fffe-22f3-482d-8560-572e2386ad17\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/signup",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"signup"
+							]
+						},
+						"description": "User Signup"
+					},
+					"response": []
+				},
+				{
+					"name": "Profile Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "fikih",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "icNumber",
+									"value": "000000000022",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "helpdesk",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "firstName",
+									"value": "abz",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "tester local",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "abztester@local.com",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Komplek DevTest",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "DevCity",
+									"type": "text"
+								},
+								{
+									"key": "state",
+									"value": "indonesia",
+									"type": "text"
+								},
+								{
+									"key": "dob",
+									"value": "1999-09-09",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "North Sumatera",
+									"type": "text"
+								},
+								{
+									"key": "postalCode",
+									"value": "23452",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/home/zfknight/Pictures/Screenshot from 2020-01-15 15-34-11.png",
+									"disabled": true
+								},
+								{
+									"key": "isActive",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "nickName",
+									"value": "abz",
+									"type": "text"
+								},
+								{
+									"key": "workphone",
+									"value": "111-111-222",
+									"type": "text"
+								},
+								{
+									"key": "marital_status",
+									"value": "not married yet",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "relationPrimaryName",
+									"value": "DevBuggerjson_decode",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "relationPrimaryPhone",
+									"value": "897-098",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "relationshipPrimary",
+									"value": "Saudara Kandung",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "jobDesk",
+									"value": "ini deskripsi job desk saya",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "educations",
+									"value": "st",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "educations",
+									"value": "[{\"levelEducation\": \"SMpp\", \"schoolName\": \"SMP N 1 DENAI TENGAH\", \"graduatedYear\": \"1998\"}]",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "doc1",
+									"type": "file",
+									"src": "/home/flaster/E-arif/New Doc 2018-06-30 (1).pdf",
+									"disabled": true
+								},
+								{
+									"key": "doc2",
+									"type": "file",
+									"src": "/home/flaster/Pictures/Screenshot from 2020-04-16 21-31-05.png",
+									"disabled": true
+								},
+								{
+									"key": "type1",
+									"value": "surat",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "type2",
+									"value": "raport",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "note1",
+									"value": "ini note last",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "note2",
+									"value": "ini note last updt",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "position",
+									"value": "9bcd7cb1-9ff5-11ea-8317-0242ac110002",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "employmentType",
+									"value": "ef9a80ab-9ff5-11ea-8317-0242ac110002",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "company",
+									"value": "d63cefe4-45be-11ec-974d-0225c907dcd6",
+									"type": "text"
+								},
+								{
+									"key": "branch",
+									"value": "e3618241-45be-11ec-974d-0225c907dcd6",
+									"type": "text"
+								},
+								{
+									"key": "department",
+									"value": "ee31c93f-45be-11ec-974d-0225c907dcd6",
+									"type": "text"
+								},
+								{
+									"key": "educations",
+									"value": "[{\"uuid\":\"\",\"levelEducation\": \"Pendidikan Siji\", \"schoolName\": \"SelayangPAndang\", \"graduatedYear\": \"2023\"}]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/profile",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile"
+							]
+						},
+						"description": "User Profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Profile Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "aaaaaaaa",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "aaaaaaaa123",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "helpdesk",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "firstName",
+									"value": "Alvian",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "lastName",
+									"value": "Linux",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "debugDuao@ymail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "address",
+									"value": "Jl. Casia Raya Blok OO A",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": "Medan",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "state",
+									"value": "indonesia",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "dateOfBirth",
+									"value": "1999-09-09",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "province",
+									"value": "North Sumatera",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "postalCode",
+									"value": "20154",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/home/zfknight/Pictures/Screenshot from 2020-01-15 15-34-11.png",
+									"disabled": true
+								},
+								{
+									"key": "isActive",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "nickName",
+									"value": "dt",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "workphone",
+									"value": "999-999-99",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "marital_status",
+									"value": "not married yet",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "relationPrimaryName",
+									"value": "DevBuggerjson_decode",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "relationPrimaryPhone",
+									"value": "897-098",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "relationshipPrimary",
+									"value": "Saudara Kandung",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "jobDesk",
+									"value": "ini deskripsi job desk saya",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "educations",
+									"value": "st",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "educations",
+									"value": "[{\"uuid\":\"fb115dcc-a583-11ea-9387-0242ac110002\",\"levelEducation\": \"Pendidikan Siji\", \"schoolName\": \"SelayangPAndang\", \"graduatedYear\": \"2023\"}]",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "doc1",
+									"type": "file",
+									"src": "/home/flaster/E-arif/New Doc 2018-06-30 (1).pdf",
+									"disabled": true
+								},
+								{
+									"key": "doc2",
+									"type": "file",
+									"src": "/home/flaster/Pictures/Screenshot from 2020-04-16 21-31-05.png",
+									"disabled": true
+								},
+								{
+									"key": "type1",
+									"value": "surat",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "type2",
+									"value": "raport",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "note1",
+									"value": "ini note last",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "note2",
+									"value": "ini note last updt",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "position",
+									"value": "9bcd7cb1-9ff5-11ea-8317-0242ac110002",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "employmentType",
+									"value": "ef9a80ab-9ff5-11ea-8317-0242ac110002",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "company",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "educations",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "signature",
+									"type": "file",
+									"src": "/home/fikih/Downloads/alfiansignature.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/profile/c0dd0e3b-d798-11ea-87dc-02752207ca62",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"c0dd0e3b-d798-11ea-87dc-02752207ca62"
+							]
+						},
+						"description": "User Profile"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE SIGNATURE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "signature",
+									"type": "file",
+									"src": "/home/fikih/Downloads/dfdas.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/user-signature",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-signature"
+							]
+						},
+						"description": "User Profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_admin_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstName",
+									"value": "Dolly Aswin",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Harahap",
+									"type": "text"
+								},
+								{
+									"key": "dateOfBirth",
+									"value": "1988-08-08",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "address",
+									"value": "Kom. Address Cempaka Madani Blok E 23",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Medan",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "North Sumatera",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "postalCode",
+									"value": "20000",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"value": "",
+									"type": "file"
+								},
+								{
+									"key": "email",
+									"value": "yasirarifdocs@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/profile/a2a4f00f-a742-11e7-b7ab-000c297bb294",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"a2a4f00f-a742-11e7-b7ab-000c297bb294"
+							]
+						},
+						"description": "User Profile"
+					},
+					"response": []
+				},
+				{
+					"name": "User Activation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.aqilix.bootstrap.v1+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.aqilix.bootstrap.v1+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"activationUuid\": \"a600f162-92f7-11e6-8ce9-0242ac110002\"}"
+						},
+						"url": {
+							"raw": "https://aqilix.xyz/api/user/activation",
+							"protocol": "https",
+							"host": [
+								"aqilix",
+								"xyz"
+							],
+							"path": [
+								"api",
+								"user",
+								"activation"
+							]
+						},
+						"description": "User Activation"
+					},
+					"response": []
+				},
+				{
+					"name": "De/Activete User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"isActive\": 0,\n\t\"note\" : \"Optional\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8086/api/v1/profile/22bd56ad-45bf-11ec-974d-0225c907dcd6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8086",
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"22bd56ad-45bf-11ec-974d-0225c907dcd6"
+							]
+						},
+						"description": "User Profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Mobile Last State",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sms_admin_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"androidLastState\": \"Testing\",\n\t\"androidLastParam\": {\"uuid\": \"ad7489bd9-849f783bcd-3898b4df\"},\n\t\"firebaseId\": \"APA91bHa-ZQByELKoK0KHcdn8qKp0qJOzcBIB\",\n\t\"androidDeviceId\": \"BB564BDCB-ZQByELKoK0KHcdn8qKp0qJOzcBIB\"\n}"
+						},
+						"url": {
+							"raw": "{{sms_api_host}}/api/v1/mobilestate",
+							"host": [
+								"{{sms_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mobilestate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hierarchy",
+			"item": [
+				{
+					"name": "Company",
+					"item": [
+						{
+							"name": "Get Company Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/company",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"company"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Company",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/company/d7a0a4d6-7809-11ec-b511-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"company",
+										"d7a0a4d6-7809-11ec-b511-0242ac110002"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Company",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Hanabi Corp.",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Jl. tokyo tower blok 002",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "82134566543",
+											"type": "text"
+										},
+										{
+											"key": "extPhone",
+											"value": "002",
+											"type": "text"
+										},
+										{
+											"key": "fax",
+											"value": "1234567",
+											"type": "text"
+										},
+										{
+											"key": "registrationId",
+											"value": "654-6543-564",
+											"type": "text"
+										},
+										{
+											"key": "taxId",
+											"value": "6755434",
+											"type": "text"
+										},
+										{
+											"key": "about",
+											"value": "ini desc si company ya",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "hnb@corp.com",
+											"type": "text"
+										},
+										{
+											"key": "businessSector",
+											"value": "afc72dc8-45be-11ec-974d-0225c907dcd6",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": [],
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/company",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"company"
+									]
+								},
+								"description": "User Profile"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Company",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Syrupo Corporation.",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Jl. warfaction menistry",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "82134566543",
+											"type": "text"
+										},
+										{
+											"key": "extPhone",
+											"value": "002",
+											"type": "text"
+										},
+										{
+											"key": "fax",
+											"value": "1234567",
+											"type": "text"
+										},
+										{
+											"key": "registrationId",
+											"value": "654-6543-564",
+											"type": "text"
+										},
+										{
+											"key": "taxId",
+											"value": "6755434",
+											"type": "text"
+										},
+										{
+											"key": "about",
+											"value": "ini desc si company ya",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "umb@corp.com",
+											"type": "text"
+										},
+										{
+											"key": "businessSector",
+											"value": "bc643284-c0eb-11ea-b72b-0242ac110002",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/home/flaster/Pictures/Screenshot from 2020-04-16 21-42-20.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/company/cd631a00-ccaf-11ea-9a01-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"company",
+										"cd631a00-ccaf-11ea-9a01-0242ac110002"
+									]
+								},
+								"description": "User Profile"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Branch",
+					"item": [
+						{
+							"name": "Get Branch Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/branch",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"branch"
+									]
+								},
+								"description": "Ticket Create"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Branch",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\" : \"aaaaaa\",\n\t\"company\": \"ad082363-4e75-11ec-a62a-0242ac110002\",\n\t\"exchangeId\" : \"5\",\n    \"address\": \"jl permata 1\",\n    \"phone\": \"021-123-123\",\n    \"extPhone\": \"001\",\n    \"fax\": \"0987665\",\n    \"taxId\": \"6755434\",\n    \"isHq\": \"0\",\n    \"note\": \"ini desc si branch nya\",\n    \"geofence\": 0,\n    \"geofenceRadius\": 100.014,\n    \"latitude\": 3.5693381,\n    \"longitude\": 98.6326923,\n    \"email\": \"branch-universe@uni.com\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/branch",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"branch"
+									]
+								},
+								"description": "Ticket Create"
+							},
+							"response": []
+						},
+						{
+							"name": "UPDATE New Branch",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\" : \"MEDAN\",\n\t\"company\": \"1c0a0b34-a33a-11ea-a2b7-020624fc2cbc\",\n\t\"exchangeId\" : \"\",\n    \"address\": \"TASBIH 1, MEDAN, INDONESIA\",\n    \"phone\": \"06188803811\",\n    \"extPhone\": \"\",\n    \"fax\": \"0000\",\n    \"geofence\": 0,\n    \"geofenceRadius\": 60,\n    \"latitude\": 3.5693381,\n    \"longitude\": 98.6326923,\n    \"email\": \"INFO@XTENDINDONESIA.CO.ID\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/branch/14fb5601-51b1-11ec-a76e-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"branch",
+										"14fb5601-51b1-11ec-a76e-0242ac110002"
+									]
+								},
+								"description": "Ticket Create"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Branch",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/branch/",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"branch",
+										""
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Department",
+					"item": [
+						{
+							"name": "Get Department",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/department",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"department"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Department",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Finance\",\n    \"company\": \"d769f618-9b4c-11ea-8b25-0242ac110002\",\n    \"branch\": \"0c45d921-332c-488e-bd4f-b8f52ca5ca04\",\n    \"phone\": \"9999999991\",\n    \"extPhone\": \"001\",\n    \"fax\": \"0987664\",\n    \"isHq\": \"1\",\n    \"email\": \"department_finance@ave.com\"\n    \n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/department",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"department"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Department",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"leave ver 3.0\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/leave-type/ca7ef4eb-8e87-11ea-b966-0242ac110002",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"leave-type",
+										"ca7ef4eb-8e87-11ea-b966-0242ac110002"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Business Sector",
+					"item": [
+						{
+							"name": "Get Business Sector Collection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/business-sector",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"business-sector"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Business Sector",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{sms_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Accountants\",\n    \"note\": \"ok\"\n}"
+								},
+								"url": {
+									"raw": "{{sms_api_host}}/api/v1/business-sector",
+									"host": [
+										"{{sms_api_host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"business-sector"
+									]
+								},
+								"description": "Me API Resource"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

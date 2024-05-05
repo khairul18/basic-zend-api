@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+  <entity name="User\Entity\CustomerCompany" table="customer_company">
+    <indexes>
+      <index name="customer_company_account_idx" columns="account_uuid"/>
+      <index name="customer_company_customer_idx" columns="customer_uuid"/>
+      <index name="customer_company_company_idx" columns="company_uuid"/>
+      <index name="customer_company_branch_idx" columns="branch_uuid"/>
+    </indexes>
+    <id name="uuid" type="string" column="uuid" length="36">
+      <generator strategy="UUID"/>
+    </id>
+    <field name="createdAt" type="datetime" column="created_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="updatedAt" type="datetime" column="updated_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="deletedAt" type="datetime" column="deleted_at" nullable="true"/>
+    <gedmo:soft-deleteable field-name="deletedAt" time-aware="false" />
+    <many-to-one field="account" target-entity="User\Entity\Account" fetch="LAZY">
+      <join-columns>
+        <join-column name="account_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="company" target-entity="User\Entity\Company" fetch="LAZY">
+      <join-columns>
+        <join-column name="company_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="branch" target-entity="User\Entity\Branch" fetch="LAZY">
+      <join-columns>
+        <join-column name="branch_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="customer" target-entity="User\Entity\Customer" fetch="LAZY">
+      <join-columns>
+        <join-column name="customer_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

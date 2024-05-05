@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+  <entity name="User\Entity\Customer" table="customer">
+    <indexes>
+      <index name="tax_category_idx" columns="tax_category_uuid"/>
+      <index name="business_sector_idx" columns="business_sector_uuid"/>
+      <index name="division_customer_idx" columns="division_customer_uuid"/>
+      <index name="position_customer_idx" columns="position_customer_uuid"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="customer_id_UNIQUE" columns="customer_id"/>
+    </unique-constraints>
+    <id name="uuid" type="string" column="uuid" length="36">
+      <generator strategy="UUID"/>
+    </id>
+    <field name="customerId" type="integer" column="customer_id" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="marketSegment" type="string" column="market_segment_uuid" length="36" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="type" type="string" column="type" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="salesType" type="string" column="sales_type" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="name" type="string" column="name" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="gender" type="string" column="gender" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="status" type="string" column="status" length="24" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phone" type="string" column="phone" length="30" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="fax" type="string" column="fax" length="30" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="website" type="string" column="website" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="email" type="string" column="email" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="address" type="string" column="address" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="city" type="string" column="city" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="state" type="string" column="state" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="postalCode" type="string" column="postal_code" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="taxId" type="string" column="tax_id" length="28" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="picName" type="string" column="pic_name" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="workphone" type="string" column="workphone" length="30" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="workemail" type="string" column="workemail" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="whatsapp" type="string" column="whatsapp" length="30" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="description" type="text" column="description" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="socialMedia" type="text" column="social_media" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="createdAt" type="datetime" column="created_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="updatedAt" type="datetime" column="updated_at" nullable="true">
+      <gedmo:timestampable on="create"/>
+    </field>
+    <field name="deletedAt" type="datetime" column="deleted_at" nullable="true"/>
+    <gedmo:soft-deleteable field-name="deletedAt" time-aware="false" />
+    <many-to-one field="account" target-entity="User\Entity\Account" fetch="LAZY">
+      <join-columns>
+        <join-column name="account_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="businessSector" target-entity="User\Entity\BusinessSector" fetch="LAZY">
+      <join-columns>
+        <join-column name="business_sector_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="taxCategory" target-entity="User\Entity\TaxCategory" fetch="LAZY">
+      <join-columns>
+        <join-column name="tax_category_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="divisionCustomer" target-entity="User\Entity\DivisionCustomer" fetch="LAZY">
+      <join-columns>
+        <join-column name="division_customer_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="positionCustomer" target-entity="User\Entity\PositionCustomer" fetch="LAZY">
+      <join-columns>
+        <join-column name="position_customer_uuid" referenced-column-name="uuid"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-many field="bankAccount" target-entity="User\Entity\BankAccount" mapped-by="customer" />
+    <one-to-many field="qrCode" target-entity="QRCode\Entity\QRCode" mapped-by="customer" />
+    <one-to-many field="customerCompany" target-entity="User\Entity\CustomerCompany" mapped-by="customer" />
+  </entity>
+</doctrine-mapping>
